@@ -28,12 +28,14 @@ class PHPDB implements iDB
             $this->DB_RAM = array();
         } else {
             $this->DB_RAM = unserialize(file_get_contents($this->DB_FILE));
+            echo "\n**Connected successfully**".PHP_EOL;
         }
         
     }
     
     public function insert($record) {
         $this->DB_RAM[] = $record;
+        echo "**New record created successfully**".PHP_EOL;
     }
     
     public function query($name, $string) {
@@ -50,15 +52,18 @@ class PHPDB implements iDB
             $i = array_search($q, $this->DB_RAM);
             unset($this->DB_RAM[$i]);
             array_values($this->DB_RAM);
+            echo "**Record deleted successfully**".PHP_EOL;
         }
     }
     public function close() {
         file_put_contents($this->DB_FILE, serialize($this->DB_RAM));
         $this->DB_RAM = NULL;
+        echo "**Disconnected successfully**".PHP_EOL;
     }
     
     public function show() {
         echo var_dump($this->DB_RAM);
+        
     }
 }
 

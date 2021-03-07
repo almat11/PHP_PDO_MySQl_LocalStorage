@@ -22,7 +22,7 @@ class DB implements iDB
             $db= $this->PDO = new PDO($this->DSN,$this->DB_USER,$this->DB_PW, $this->DB_options);
             $db= $this->PDO->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
             $db= $this->PDO->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE,PDO::FETCH_ASSOC);
-            echo "\nConnected successfully\n".PHP_EOL;
+            echo "\n**Connected successfully**".PHP_EOL;
         } catch(PDOException $err) {
             echo 'DB ERROR: '.$err->getMessage().PHP_EOL;
         }
@@ -37,7 +37,8 @@ class DB implements iDB
             $err= $db->errorInfo();
             echo 'DB ERROR: #'.$err[1]." ".$err[2].PHP_EOL;
         }else {
-            echo "New record created successfully".PHP_EOL;
+            echo "**New record created successfully**".PHP_EOL;
+            
         }
     }
     
@@ -53,34 +54,33 @@ class DB implements iDB
         }
     }
     
-    //      The same function like query but with fetchAll.
-    //      fetchAll() reads the entire temporary table into an array.
-    //      Of course, this is only useful for small tables.
-    //
-    //      function query($name, $string){
-    //         $stmt = $this->PDO->prepare("SELECT id,name,price FROM price_list WHERE ${name} = '${string}';");
-    //         $stmt->execute();
-    //         $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
-    //         echo "\n---\n";
-    //         foreach($stmt->fetchAll() as $k=>$v) {
-    //             foreach ($v as $value){
-    //                 echo $value . " ";
-    //             }
-    //         echo "---\n";
-    //        }
-    //     }
+//          The same function like query but with fetchAll.
+//          fetchAll() reads the entire temporary table into an array.
+//          Of course, this is only useful for small tables.
+         function queryAll(){
+            $stmt = $this->PDO->prepare("SELECT * FROM price_list;");
+            $stmt->execute();
+            $result = $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            echo "\n**nur um die ganze Tabelle zu sehen**\n";
+            foreach($stmt->fetchAll() as $k=>$v) {
+                foreach ($v as $value){
+                    echo $value . " ";
+                }
+            echo "---\n";
+           }
+        }
     
     //  If the condition is met by several lines, only the first line is ever returned.
     function delete($name,$string){
         $query = "DELETE FROM price_list WHERE ${name} = '${string}' LIMIT 1;";
         $data = $this->PDO->query($query);
-        echo "Record deleted successfully".PHP_EOL;
+        echo "**Record deleted successfully**".PHP_EOL;
     }
     
     //  Close the DB connection
     function close(){
         $conn = null;
-        echo "Disconnected successfully".PHP_EOL;
+        echo "**Disconnected successfully**".PHP_EOL;
     }
 }
 
